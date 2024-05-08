@@ -1,7 +1,8 @@
-Создать таблицы:
-    docker exec fastapi-app alembic upgrade head
+Запустить приложение:
+    1: из корневой дериктории ввести команду make app-up
+    2: произвести миграции make alembic-upgrade
 
-Сгенерировать ревизию:
-    docker exec fastapi-app alembic revision --autogenerate -m "init"
+Чтобы откатить миграции: make alembic-downgrade
+Создать ревизию: make alembic-revision
 
-docker exec fastapi-app alembic downgrade -1
+Остановить контейнеры: make app-down
