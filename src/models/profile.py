@@ -12,6 +12,7 @@ class Profile(Base, UserRelationMixin):
     _user_id_unique = True
     _user_back_populates = "profile"
 
+    id: Mapped[int] = mapped_column(primary_key=True)
     last_name: Mapped[str | None] = mapped_column(String(40))
     first_name: Mapped[str | None] = mapped_column(String(40))
     birthdate: Mapped[datetime.date] = mapped_column(Date)

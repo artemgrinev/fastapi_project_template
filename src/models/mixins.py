@@ -5,12 +5,14 @@ from sqlalchemy.orm import declared_attr, Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
     from .user import User
+    from .position import Position
 
 
 class UserRelationMixin:
     _user_id_unique: bool = False,
     _user_id_nullable: bool = False,
     _user_back_populates: str | None = None,
+    _primary_key: bool = False,
 
     @declared_attr
     def user_id(cls) -> Mapped[int]:
@@ -18,6 +20,7 @@ class UserRelationMixin:
             ForeignKey("user.id"),
             unique=cls._user_id_unique,
             nullable=cls._user_id_nullable,
+            primary_key=cls._primary_key,
         )
 
     @declared_attr
@@ -25,4 +28,26 @@ class UserRelationMixin:
         return relationship(
             "User",
             back_populates=cls._user_back_populates
+        )
+    
+class PositionRelationMixin:
+    _position_id_unique: bool = False,
+    _position_id_nullable: bool = False,
+    _position_back_populates: str | None = None,
+    _primary_key: bool = False,
+
+    @declared_attr
+    def position_id(cls) -> Mapped[int]:
+        return mapped_column(
+            ForeignKey("position.id"),
+            unique=cls._position_id_unique,
+            nullable=cls._position_id_nullable,
+            primary_key=cls._primary_key,
+        )
+
+    @declared_attr
+    def position(cls) -> Mapped["Position"]:
+        return relationship(
+            "Position",
+            back_populates=cls._position_back_populates
         )
