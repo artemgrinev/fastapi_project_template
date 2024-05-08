@@ -1,14 +1,19 @@
 DC = docker compose
 ALEMBIC = docker exec fastapi-app alembic
-APP = docker-compose.yml
+APP-FILE = docker-compose.yml
+APP = fastapi-app
 
 .PHONY: app-up
 app-up:
-	${DC} -f ${APP} up -d
+	${DC} -f ${APP-FILE} up -d
 
 .PHONY: app-down
 app-down:
-	${DC} -f ${APP} down
+	${DC} -f ${APP-FILE} down
+	
+.PHONY: app-logs
+app-logs:
+	docker logs ${APP} -f
 
 .PHONY: alembic-revision
 alembic-revision:

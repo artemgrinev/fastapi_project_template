@@ -1,28 +1,13 @@
 from fastapi import APIRouter
-from fastapi_users import FastAPIUsers
+from src.api_v1.routes import router as api_v1_routes
 
-from src.api_v1.users.schemas import UserRead, UserCreate
-from src.api_v1.users.dependencies import user_manager
-from src.models.user import User
-
-from src.api_v1.users.config import auth_backend
-
-fastapi_users = FastAPIUsers[User, int](
-    user_manager,
-    [auth_backend],
-)
 
 
 def get_apps_router():
-    router = APIRouter()
-    router.include_router(
-        fastapi_users.get_auth_router(auth_backend),
-        prefix="/auth/jwt",
-        tags=["auth"],
+    router = APIRouter(
+        prefix="/api"
     )
     router.include_router(
-        fastapi_users.get_register_router(UserRead, UserCreate),
-        prefix="/auth",
-        tags=["auth"],
+        api_v1_routes,
     )
     return router

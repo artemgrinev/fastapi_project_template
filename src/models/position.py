@@ -9,7 +9,9 @@ if TYPE_CHECKING:
 
 class Position(Base):
     __tablename__ = 'position'
+    
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String, nullable=False)
     salary: Mapped[int] = mapped_column(Integer, nullable=False)
-    users: Mapped[list["User"]] = relationship(back_populates="positions", secondary="user_position")
+    profile: Mapped[list["User"]] = relationship("Profile", back_populates="positions", secondary="user_position")
+
