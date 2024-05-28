@@ -6,5 +6,5 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from config.database.db_helper import db_helper
 
 
-async def user_crud(session: AsyncSession = Depends(db_helper.scoped_session_dependency)):
+async def user_repositories(session: AsyncSession = Depends(db_helper.get_async_session)):
     yield SQLAlchemyUserDatabase(session, User)

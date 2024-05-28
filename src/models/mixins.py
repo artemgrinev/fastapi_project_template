@@ -29,25 +29,3 @@ class UserRelationMixin:
             "User",
             back_populates=cls._user_back_populates
         )
-    
-class PositionRelationMixin:
-    _position_id_unique: bool = False,
-    _position_id_nullable: bool = False,
-    _position_back_populates: str | None = None,
-    _primary_key: bool = False,
-
-    @declared_attr
-    def position_id(cls) -> Mapped[int]:
-        return mapped_column(
-            ForeignKey("position.id"),
-            unique=cls._position_id_unique,
-            nullable=cls._position_id_nullable,
-            primary_key=cls._primary_key,
-        )
-
-    @declared_attr
-    def position(cls) -> Mapped["Position"]:
-        return relationship(
-            "Position",
-            back_populates=cls._position_back_populates
-        )
