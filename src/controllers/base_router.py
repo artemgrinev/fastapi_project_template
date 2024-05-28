@@ -1,5 +1,6 @@
 from fastapi import APIRouter
-from src.api_v1.routes import router as api_v1_routes
+from src.api_v1.controllers import router as api_v1_routes
+# from src.api_v1.routes import router as api_v1_routes
 
 
 
