@@ -15,8 +15,8 @@ class Profile(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user: Mapped["User"] = relationship(back_populates="profile")
-    user_pk: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    last_name: Mapped[str | None] = mapped_column(String(40), default="Worker")
+    user_pk: Mapped[int] = mapped_column(ForeignKey("user.id"), unique=True)
+    last_name: Mapped[str | None] = mapped_column(String(40))
     first_name: Mapped[str | None] = mapped_column(String(40), nullable=True)
     birthdate: Mapped[datetime.date] = mapped_column(Date)
     created_at: Mapped[datetime.datetime] = mapped_column(

@@ -2,21 +2,25 @@ import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-class BaseProfile(BaseModel):
+
+class ProfileResponse(BaseModel):
+    id: int
     first_name: str
     last_name: str
     birthdate: Optional[datetime.date]
     created_at: Optional[datetime.datetime]
     updated_at: Optional[datetime.datetime]
 
-class ProfileCreate(BaseProfile):
+class ProfileCreate(BaseModel):
     user_pk: int
-
-class ProfileResponse(BaseProfile):
-    id: int
+    first_name: str
+    last_name: str
+    birthdate: Optional[datetime.date]
     
-class ProfileUpdate(BaseProfile):
-    id: int
+class ProfileUpdate(BaseModel):
+    first_name: str
+    last_name: str
+    birthdate: Optional[datetime.date]
 
 class ProfileDelete(BaseModel):
     id: int
