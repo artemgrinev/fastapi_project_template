@@ -1,13 +1,24 @@
-from fastapi import APIRouter, Depends, HTTPException
-from starlette.status import HTTP_400_BAD_REQUEST
+from typing import Annotated
+from fastapi import APIRouter, Path, Depends, HTTPException, Request
+from fastapi.exceptions import ResponseValidationError
+import sqlalchemy
+from starlette.status import (
+    HTTP_400_BAD_REQUEST, 
+    HTTP_404_NOT_FOUND, 
+    HTTP_500_INTERNAL_SERVER_ERROR
+)
 from src.models.user import User
+from src.schemas.base_schemas import ID
 from ..config.auth import current_user
 from ..services.profile import profile_service
 from ..schemas.profile import (
     ProfileCreate,
     ProfileResponse,
     ProfileUpdate,
+    HTTP_404,
+    HTTP_422,
 )
+from config.logger import logger
 
 
 router = APIRouter(
@@ -16,13 +27,40 @@ router = APIRouter(
 )
 
 
-@router.get("/{id}")
-async def get_profile_by_id(id: int) -> ProfileResponse:
+@router.get(
+        "/{id}",
+        name="profiles:get-profile-by-id",
+        responses={
+            404: {
+                "model": HTTP_404,
+                "description": "Profile not found"
+            },
+            422: {
+                "model": HTTP_422,
+                "description": "Input must be a valid integer not exceeding 10 characters"
+            }
+
+    }
+)
+
+async def get_profile_by_id(
+    id: int = Path(title="The ID of the item to get", gt=0, le=1000000000)
+):
     try:
-        return await profile_service.get(pk=id)
+        profile = await profile_service.get(pk=id)
+        if profile is not None:
+            logger.info(f"get profile by id: {profile.id}")
+            return profile
+        else:
+            logger.info(f"profile {id} not found")
+            raise HTTPException(
+                status_code=404,
+                detail=f"Profile {id} not found"
+            )
     except Exception as e:
+        logger.warning(e)
         raise HTTPException(HTTP_400_BAD_REQUEST, str(e))
-    
+
 
 @router.post("/create")
 async def create_profile(

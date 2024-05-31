@@ -3,6 +3,10 @@ ALEMBIC = docker exec fastapi-app alembic
 APP-FILE = docker-compose.yml
 APP = fastapi-app
 
+.PHONY: app-build
+app-build:
+	${DC} -f ${APP-FILE} up --build -d
+
 .PHONY: app-up
 app-up:
 	${DC} -f ${APP-FILE} up -d

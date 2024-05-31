@@ -5,7 +5,7 @@ from src.api_v1.schemas.auth import UserRead, UserCreate
 
 router = APIRouter(
     prefix="/auth",
-    tags=["auth"]
+    tags=["Auth"]
 )
 
 router.include_router(
