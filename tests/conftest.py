@@ -40,7 +40,7 @@ def db(app: FastAPI):
  
 # Make requests in our tests
 @pytest.fixture
-async def client(app: FastAPI) -> AsyncClient:
+async def client(app: FastAPI) -> AsyncClient: # type: ignore
     async with LifespanManager(app):
         async with AsyncClient(
             app=app,

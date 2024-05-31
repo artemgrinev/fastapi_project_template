@@ -39,17 +39,3 @@ class HTTP_404(BaseModel):
             ]
         }
     }
-
-
-class HTTP_422(BaseModel):
-    detail: str
-
-    model_config = {
-        "json_schema_extra": {
-            "examples": [
-                {
-                    "detail": "Input must be a valid integer not exceeding 10 characters",
-                },
-            ]
-        }
-    }
