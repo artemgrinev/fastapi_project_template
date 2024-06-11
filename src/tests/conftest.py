@@ -23,6 +23,7 @@ DATABASE_TEST_URL = (
     f'{settings.TEST_POSTGRES_DB}'
 )
 
+
 engine_test = create_async_engine(DATABASE_TEST_URL, poolclass=NullPool)
 async_session_maker = sessionmaker(engine_test, class_=AsyncSession, expire_on_commit=False)
 
@@ -38,7 +39,7 @@ def alembic_config():
     config.set_main_option("sqlalchemy.url", DATABASE_TEST_URL)
     return config
 
-@pytest_asyncio.fixture(scope="session")
+@pytest_asyncio.fixture(autouse=True, scope="session")
 async def prepare_database(alembic_config):
     async with engine_test.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)

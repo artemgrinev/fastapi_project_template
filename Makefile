@@ -19,6 +19,10 @@ app-down:
 app-logs:
 	docker logs ${APP} -f
 
+.PHONY: app-test
+app-test:
+	docker exec -it fastapi-app bash -c "poetry run pytest -v"
+
 .PHONY: alembic-revision
 alembic-revision:
 	${ALEMBIC} revision --autogenerate -m "init"
