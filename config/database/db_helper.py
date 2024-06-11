@@ -1,5 +1,7 @@
 from asyncio import current_task
 from contextlib import asynccontextmanager
+import os
+# from config.logger import logger
 
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -7,7 +9,6 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     async_scoped_session,
 )
-from sqlalchemy import exc
 
 from config.database.db_config import settings_db
 
@@ -37,6 +38,9 @@ class DatabaseHelper:
         try:
             yield session
         except exc.SQLAlchemyError as error:
+            # logger.warning("--- DB CONNECTION ERROR ---")
+            # logger.warning(error)
+            # logger.warning("--- DB CONNECTION ERROR ---")
             await session.rollback()
             raise
         finally:
@@ -48,6 +52,6 @@ class DatabaseHelper:
 
 
 db_helper = DatabaseHelper(
-    url=settings_db.database_url,
+    url=f"{settings_db.database_url}_test" if os.environ.get("TESTING") else settings_db.database_url,
     echo=settings_db.DB_ECHO_LOG,
 )

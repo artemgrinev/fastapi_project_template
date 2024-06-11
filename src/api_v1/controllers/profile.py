@@ -1,11 +1,7 @@
-from typing import Annotated
-from fastapi import APIRouter, Path, Depends, HTTPException, Request
-from fastapi.exceptions import ResponseValidationError
-import sqlalchemy
+
+from fastapi import APIRouter, Path, Depends, HTTPException
 from starlette.status import (
-    HTTP_400_BAD_REQUEST, 
-    HTTP_404_NOT_FOUND, 
-    HTTP_500_INTERNAL_SERVER_ERROR
+    HTTP_400_BAD_REQUEST
 )
 from src.models.user import User
 from src.schemas.base_schemas import ID
@@ -16,9 +12,8 @@ from ..schemas.profile import (
     ProfileResponse,
     ProfileUpdate,
     HTTP_404,
-    HTTP_422,
 )
-from config.logger import logger
+# from config.logger import logger
 
 
 router = APIRouter(
@@ -35,10 +30,6 @@ router = APIRouter(
                 "model": HTTP_404,
                 "description": "Profile not found"
             },
-            422: {
-                "model": HTTP_422,
-                "description": "Input must be a valid integer not exceeding 10 characters"
-            }
 
     }
 )
@@ -49,16 +40,16 @@ async def get_profile_by_id(
     try:
         profile = await profile_service.get(pk=id)
         if profile is not None:
-            logger.info(f"get profile by id: {profile.id}")
+            # logger.info(f"get profile by id: {profile.id}")
             return profile
         else:
-            logger.info(f"profile {id} not found")
+            # logger.info(f"profile {id} not found")
             raise HTTPException(
                 status_code=404,
                 detail=f"Profile {id} not found"
             )
     except Exception as e:
-        logger.warning(e)
+        # logger.warning(e)
         raise HTTPException(HTTP_400_BAD_REQUEST, str(e))
 
 

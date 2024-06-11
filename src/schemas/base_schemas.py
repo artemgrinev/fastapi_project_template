@@ -6,7 +6,7 @@ PyModel = NewType("PyModel", BaseModel)
 
 
 class Base(BaseModel):
-    class Config:
+    class ConfigDict:
         from_attributes = True
 
 
